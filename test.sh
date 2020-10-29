@@ -20,7 +20,7 @@ do
   fi
 done
 
-if [ has_failures != 0 ]; then
+if [ $has_failures != 0 ]; then
   echo "Had failures on a clean image!"
 fi
 
