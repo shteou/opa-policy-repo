@@ -1,9 +1,6 @@
 package main
 
-hasPodSpec {
-    k := input.kind
-    {k} & {"Deployment", "ReplicaSet", "StatefulSet", "DaemonSet"} ==  {k}
-}
+import data.kubernetes
 
 deny_pod_has_no_service_account_name[msg] {
   input.kind = "Pod"
@@ -18,7 +15,7 @@ exception[rules] {
 }
 
 deny_deployment_has_no_service_account_name[msg] {
-  hasPodSpec
+  kubernetes.hasPodSpec
   kind := input.kind
   value := input.spec.template.spec.serviceAccountName
   value != "my-service-account"
@@ -26,7 +23,7 @@ deny_deployment_has_no_service_account_name[msg] {
 }
 
 exception[rules] {
-  not hasPodSpec
+  not kubernetes.hasPodSpec
   rules = ["deployment_has_no_service_account_name"]
 }
 
