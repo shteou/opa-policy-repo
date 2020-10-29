@@ -1,7 +1,13 @@
 rm -Rf out/
 
-helm template release --set serviceAccount.name="my-service-account" ./clean | awk -vout=out -F": " '$0~/^# Source: /{file=out"/"$2; print "Creating "file; system ("mkdir -p $(dirname "file"); echo -n "" > "file)} $0!~/^#/ && $0!="---"{print $0 >> file}'
-helm template release --set serviceAccount.name="my-service-account" ./dirty | awk -vout=out -F": " '$0~/^# Source: /{file=out"/"$2; print "Creating "file; system ("mkdir -p $(dirname "file"); echo -n "" > "file)} $0!~/^#/ && $0!="---"{print $0 >> file}'
+function template() {
+  dir=$1
+  helm template release --set serviceAccount.name="my-service-account" ./$1 | awk -vout=out -F": " '$0~/^# Source: /{file=out"/"$2; print "Creating "file; system ("mkdir -p $(dirname "file"); echo -n "" > "file)} $0!~/^#/ && $0!="---"{print $0 >> file}'
+}
+
+template clean
+template dirty
+
 
 has_failures=0
 
