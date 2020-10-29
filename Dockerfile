@@ -8,5 +8,5 @@ WORKDIR /opa-policy-test
 
 ADD . .
 
-ENTRYPOINT sh
+ENTRYPOINT ["sh"]
 CMD ["test.sh"]
