@@ -1,13 +1,6 @@
 package main
 
-warn[msg] {
-  input.kind = "Deployment"
-  container := input.spec.template.spec.containers[_]
-  not container.securityContext.runAsNonRoot = true
-  msg = "Containers must not run as root"
-}
-
-deny[msg] {
+warn_no_match_appname_label[msg] {
   input.kind = "Deployment"
   labels := input.spec.selector.matchLabels
   object.get(labels, "app.kubernetes.io/name", "") == ""
