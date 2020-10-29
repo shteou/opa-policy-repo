@@ -9,7 +9,7 @@ deny[msg] {
   input.kind = "Pod"
   value := input.spec.serviceAccountName
   value != "my-service-account"
-  msg = sprintf("serviceAccountName must be configurable by .Values.serviceAccount, found `%v`", [value])
+  msg = sprintf("Pod serviceAccountName must be configurable by .Values.serviceAccount, found `%v`", [value])
 }
 
 deny[msg] {
