@@ -12,7 +12,7 @@ deny_pod_must_not_run_as_root[msg] {
 }
 
 deny_podspec_must_not_run_as_root[msg] {
-  kubernetes.hasPodSpec
+  kubernetes.has_pod_spec
 
   container := input.spec.template.spec.containers[_]
   not container.securityContext.runAsNonRoot = true

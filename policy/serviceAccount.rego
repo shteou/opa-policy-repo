@@ -16,7 +16,7 @@ exception[rules] {
 }
 
 deny_deployment_has_no_service_account_name[msg] {
-  kubernetes.hasPodSpec
+  kubernetes.has_pod_spec
 
   input.spec.template.spec.serviceAccountName != "my-service-account"
 
@@ -24,7 +24,7 @@ deny_deployment_has_no_service_account_name[msg] {
 }
 
 exception[rules] {
-  not kubernetes.hasPodSpec
+  not kubernetes.has_pod_spec
   rules = ["deployment_has_no_service_account_name"]
 }
 

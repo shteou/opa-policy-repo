@@ -1,6 +1,6 @@
 package kubernetes
 
-hasPodSpec {
+has_pod_spec {
     k := input.kind
     {k} & {"Deployment", "ReplicaSet", "StatefulSet", "DaemonSet"} ==  {k}
 }
