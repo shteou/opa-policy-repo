@@ -1,7 +1,5 @@
 package main
 
-
-
 warn[msg] {
   input.kind = "Deployment"
   container := input.spec.template.spec.containers[_]
@@ -11,6 +9,7 @@ warn[msg] {
 
 deny[msg] {
   input.kind = "Deployment"
-  not input.spec.selector.matchLabels.app
+  labels := input.spec.selector.matchLabels
+  object.get(labels, "app.kubernetes.io/name", "") == ""
   msg = "Containers must provide app label for pod selectors"
 }
