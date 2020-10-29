@@ -1,6 +1,6 @@
-# helm OPA policies
+# OPA policy repository
 
-This repository contains a series of OPA policies for applying to Helm charts.
+This repository contains a series of OPA policies for applying to Helm charts (and later, Dockerfiles, ignore files, etc.).
 
 It implements the following rules:
 
