@@ -1,8 +1,12 @@
 package main
 
+import data.kubernetes
+
 warn_no_match_appname_label[msg] {
-  input.kind = "Deployment"
+  kubernetes.hasPodSpec
+
   labels := input.spec.selector.matchLabels
   object.get(labels, "app.kubernetes.io/name", "") == ""
-  msg = "Containers must provide app label for pod selectors"
+
+  msg = sprintf("%v:%v should provide app.kubernetes.io/name label in pod selectors", [input.kind, input.metadata.name])
 }

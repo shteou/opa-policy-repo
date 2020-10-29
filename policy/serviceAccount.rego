@@ -4,9 +4,10 @@ import data.kubernetes
 
 deny_pod_has_no_service_account_name[msg] {
   input.kind = "Pod"
-  value := input.spec.serviceAccountName
-  value != "my-service-account"
-  msg = sprintf("Pod serviceAccountName must be configurable by .Values.serviceAccount, found `%v`", [value])
+
+  input.spec.serviceAccountName != "my-service-account"
+
+  msg = sprintf("Pod serviceAccountName must be configurable by .Values.serviceAccount, found `%v`", [input.spec.serviceAccountName])
 }
 
 exception[rules] {
@@ -16,10 +17,10 @@ exception[rules] {
 
 deny_deployment_has_no_service_account_name[msg] {
   kubernetes.hasPodSpec
-  kind := input.kind
-  value := input.spec.template.spec.serviceAccountName
-  value != "my-service-account"
-  msg = sprintf("%v serviceAccountName must be configurable by .Values.serviceAccount, found `%v", [kind, value])
+
+  input.spec.template.spec.serviceAccountName != "my-service-account"
+
+  msg = sprintf("%v serviceAccountName must be configurable by .Values.serviceAccount, found `%v", [input.kind, input.spec.template.spec.serviceAccountName])
 }
 
 exception[rules] {
@@ -29,8 +30,8 @@ exception[rules] {
 
 deny_has_service_account[msg] {
   input.kind = "ServiceAccount"
-  name := input.metadata.name
-  msg = sprintf("The chart should not define a ServiceAccount object, found `%v`", [name])
+
+  msg = sprintf("The chart should not define a ServiceAccount object, found `%v`", [input.metadata.name])
 }
 
 exception[rules] {
