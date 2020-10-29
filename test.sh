@@ -2,9 +2,9 @@ rm -Rf out/
 
 function template() {
   dir=$1
-  echo "Templating $1"
-  helm template release --set serviceAccount.name="my-service-account" ./$1 | awk -vout=out -F": " '$0~/^# Source: /{file=out"/"$2; print "Creating "file; system ("mkdir -p $(dirname "file"); echo -n "" > "file)} $0!~/^#/ && $0!="---"{print $0 >> file}'
-  echo ""
+  printf "Templating $1\n"
+  helm template release --set serviceAccount.name="my-service-account" ./$1 | awk -vout=out -F": " '$0~/^# Source: /{file=out"/"$2; print "Creating "file; system ("mkdir -p $(dirname "file"); printf -n "" > "file)} $0!~/^#/ && $0!="---"{print $0 >> file}'
+  printf "\n"
 }
 
 template clean
@@ -13,11 +13,11 @@ template dirty
 
 has_failures=0
 
-echo "Executing conftest against clean yaml files"
+printf "Executing conftest against clean yaml files\n"
 
 for f in out/clean/templates/*.yaml
 do
-  echo "Executing conftest against $f"
+  printf "Executing conftest against $f\n"
   conftest test $f
   if [ $? != 0 ]; then
     has_failures=1
@@ -25,15 +25,15 @@ do
 done
 
 if [ $has_failures != 0 ]; then
-  echo "Had failures on a clean image!"
+  printf "Had failures on a clean image!\n"
 fi
 
-echo "\nExecuting conftest against dirty yaml files"
+printf "\nExecuting conftest against dirty yaml files\n"
 
 for f in out/dirty/templates/*.yaml
 do
-  echo "Executing conftest against $f"
+  printf "Executing conftest against $f\n"
   conftest test $f
 done
 
-echo "Did we get all the failures?"
+printf "Did we get all the failures?\n"
