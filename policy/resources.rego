@@ -2,27 +2,34 @@ package main
 
 import data.kubernetes
 
-deny_pod_must_have_resources[msg] {
-  input.kind = "Pod"
+deny_must_have_resource_request_memory[msg] {
+  container = kubernetes.containers[_]
+  not container.resources.requests.memory
 
-  container := input.spec.containers[_]
-  container.resources.requests.memory == ""
-  container.resources.requests.cpu == ""
-  container.resources.limits.memory == ""
-  container.resources.limits.cpu == ""
-
-  msg = sprintf("Pod:%v must define resources", [input.metadata.name])
+  msg = sprintf("%v:%v must define a resource memory request", [input.kind, input.metadata.name])
 }
 
-deny_podspec_must_have_resources[msg] {
-  kubernetes.has_pod_spec
 
-  container := input.spec.template.spec.containers[_]
-  trace(container.name)
-  container.resources.requests.memory == ""
-  container.resources.requests.cpu == ""
-  container.resources.limits.memory == ""
-  container.resources.limits.cpu == ""
+deny_must_have_resource_limit_memory[msg] {
+  container = kubernetes.containers[_]
+  not container.resources.limits.memory
 
-  msg = sprintf("%v:%v must define podSpec resources", [input.kind, input.metadata.name])
+  msg = sprintf("%v:%v must define a resource memory limit", [input.kind, input.metadata.name])
 }
+
+
+deny_must_have_resource_request_cpu[msg] {
+  container = kubernetes.containers[_]
+  not container.resources.requests.cpu
+
+  msg = sprintf("%v:%v must define a resource cpu request", [input.kind, input.metadata.name])
+}
+
+
+deny_must_have_resource_limit_cpu[msg] {
+  container = kubernetes.containers[_]
+  not container.resources.limits.cpu
+
+  msg = sprintf("%v:%v must define a resource cpu limit", [input.kind, input.metadata.name])
+}
+
