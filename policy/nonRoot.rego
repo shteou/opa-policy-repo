@@ -17,5 +17,5 @@ deny_podspec_must_not_run_as_root[msg] {
   container := input.spec.template.spec.containers[_]
   not container.securityContext.runAsNonRoot = true
 
-  msg = sprintf("%v:5v must not run as root", [input.kind, input.metadata.name])
+  msg = sprintf("%v:%v must not run as root", [input.kind, input.metadata.name])
 }
