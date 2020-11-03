@@ -10,7 +10,7 @@ valid_revision_history_limit {
     input.spec.revisionHistoryLimit >= 5
 }
 
-deny_replicaset_no_explicit_revision_history_limit[msg] {
+warn_replicaset_no_explicit_revision_history_limit[msg] {
     has_revision_history_limit
 
     not valid_revision_history_limit
